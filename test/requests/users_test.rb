@@ -1,16 +1,19 @@
 # encoding: UTF-8
-require 'spec_helper'
+require 'test_helper'
 
-feature 'Users' do
-  background do
-    1.upto(100) {|i| User.create! :name => "user#{'%03d' % i}" }
+class PaginationTest < ActionDispatch::IntegrationTest
+  include Capybara::DSL
+
+  def setup
+    100.times {|i| User.create! :name => "user#{'%03d' % i}" }
   end
-  scenario 'navigating by pagination links' do
+
+  def test_navigating_by_pagination_links
     visit '/users'
 
     within 'nav.pagination' do
       within 'span.page.current' do
-        page.should have_content '1'
+        assert_text '1'
       end
       within 'span.next' do
         click_link 'Next ›'
@@ -19,7 +22,7 @@ feature 'Users' do
 
     within 'nav.pagination' do
       within 'span.page.current' do
-        page.should have_content '2'
+        assert_text '2'
       end
       within 'span.last' do
         click_link 'Last »'
@@ -28,7 +31,7 @@ feature 'Users' do
 
     within 'nav.pagination' do
       within 'span.page.current' do
-        page.should have_content '4'
+        assert_text '4'
       end
       within 'span.prev' do
         click_link '‹ Prev'
@@ -37,7 +40,7 @@ feature 'Users' do
 
     within 'nav.pagination' do
       within 'span.page.current' do
-        page.should have_content '3'
+        assert_text '3'
       end
       within 'span.first' do
         click_link '« First'
@@ -46,7 +49,7 @@ feature 'Users' do
 
     within 'nav.pagination' do
       within 'span.page.current' do
-        page.should have_content '1'
+        assert_text '1'
       end
     end
   end
