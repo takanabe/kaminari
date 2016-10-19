@@ -38,8 +38,8 @@ module Kaminari
     # items at the specified "page"
     class_eval <<-RUBY, __FILE__, __LINE__ + 1
       def #{Kaminari.config.page_method_name}(num = 1)
-          if num.to_i > Kaminari.config.max_pages
-            raise MaxPageViolation, Kaminari.config.max_page_violation_message
+          if num.to_i > Kaminari.config.max_pages && Kaminari.config.raise_on_max_page_violation
+            raise MaxPageViolation
           else
             offset(limit_value * ((num = num.to_i - 1) < 0 ? 0 : num))
           end

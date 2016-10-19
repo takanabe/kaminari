@@ -18,7 +18,7 @@ module Kaminari
     self.page_method_name = :page
     self.param_name = :page
     self.max_pages = nil
-    self.max_page_violation_message = "Sorry, this service does not serve results for your query."
+    self.raise_on_max_page_violation = false
     self.params_on_first_page = false
 
     # If param_name was given as a callable object, call it when returning
