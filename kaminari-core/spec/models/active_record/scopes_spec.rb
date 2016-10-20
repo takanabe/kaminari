@@ -70,6 +70,15 @@ if defined? ActiveRecord
             it_should_behave_like 'blank page'
           end
 
+          context 'page > max page with raise_on_max_page_violation' do
+            before do
+              Kaminari.configure {|c| c.raise_on_max_page_violation = true }
+            end
+            it "raises Kaminari::MaxPageViolation" do
+              expect { model_class.page 5 }.to raise_error(Kaminari::MaxPageViolation)
+            end
+          end
+
           describe 'ensure #order_values is preserved' do
             subject { model_class.order('id').page 1 }
             its('order_values.uniq') { should == ['id'] }
