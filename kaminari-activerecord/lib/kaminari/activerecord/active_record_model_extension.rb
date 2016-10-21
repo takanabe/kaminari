@@ -12,7 +12,7 @@ module Kaminari
       #   Model.page(5)
       eval <<-RUBY, nil, __FILE__, __LINE__ + 1
         def self.#{Kaminari.config.page_method_name}(num = nil)
-          if Kaminari.config.max_pages
+          if Kaminari.config.max_pages && num
             if num.to_i > Kaminari.config.max_pages && Kaminari.config.raise_on_max_page_violation
               raise MaxPageViolation
             end
