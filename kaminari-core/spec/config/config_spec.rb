@@ -93,14 +93,14 @@ describe Kaminari::Configuration do
 
   describe 'raise_on_max_page_violation' do
     context 'by default' do
-      its(:raise_on_max_page_violation) { should = nil }
+      its(:raise_on_max_page_violation) { should == false }
     end
 
     context 'configure via config block' do
       before do
         Kaminari.configure {|c| c.raise_on_max_page_violation = true }
       end
-      its(:raise_on_max_page_violation) { should = true }
+      its(:raise_on_max_page_violation) { should == true }
       after do
         Kaminari.configure {|c| c.raise_on_max_page_violation = false }
       end
