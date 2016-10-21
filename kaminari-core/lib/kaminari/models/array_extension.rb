@@ -38,7 +38,7 @@ module Kaminari
     # items at the specified "page"
     class_eval <<-RUBY, __FILE__, __LINE__ + 1
       def #{Kaminari.config.page_method_name}(num = 1)
-        raise MaxPageViolation if violate_max_page?(num)
+        raise MaxPageViolation if violating_max_page?(num)
         offset(limit_value * ((num = num.to_i - 1) < 0 ? 0 : num))
       end
     RUBY
@@ -58,7 +58,8 @@ module Kaminari
       self.class.new @_original_array, :limit => @_limit_value, :offset => num, :total_count => @_total_count, :padding => @_padding
     end
 
-    def violate_max_page?(num)
+    private
+    def violating_max_page?(num)
       if Kaminari.config.max_pages
         if num.to_i > Kaminari.config.max_pages && Kaminari.config.raise_on_max_page_violation
           true
