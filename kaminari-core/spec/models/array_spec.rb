@@ -47,6 +47,24 @@ describe Kaminari::PaginatableArray do
       subject { array.page 5 }
       it_should_behave_like 'blank array page'
     end
+
+    context 'page > max page with raise_on_max_page_violation' do
+      before do
+        Kaminari.configure do |c|
+          c.max_pages = 4
+          c.raise_on_max_page_violation = true
+        end
+      end
+      it "raises Kaminari::MaxPageViolation" do
+        expect { array.page 5 }.to raise_error(Kaminari::MaxPageViolation)
+      end
+      after do
+        Kaminari.configure do |c|
+          c.max_pages = nil
+          c.raise_on_max_page_violation = false
+        end
+      end
+    end
   end
 
   describe '#per' do
