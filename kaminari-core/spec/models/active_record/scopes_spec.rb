@@ -72,10 +72,19 @@ if defined? ActiveRecord
 
           context 'page > max page with raise_on_max_page_violation' do
             before do
-              Kaminari.configure {|c| c.raise_on_max_page_violation = true }
+              Kaminari.configure do |c|
+                c.max_pages = 4
+                c.raise_on_max_page_violation = true
+              end
             end
             it "raises Kaminari::MaxPageViolation" do
               expect { model_class.page 5 }.to raise_error(Kaminari::MaxPageViolation)
+            end
+            after do
+              Kaminari.configure do |c|
+                c.max_pages = nil
+                c.raise_on_max_page_violation = false
+              end
             end
           end
 
